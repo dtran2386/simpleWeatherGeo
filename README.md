@@ -1,2 +1,2 @@
 # simpleWeatherGeo
-getting weather using simpleWeather and geolocation services
+getting weather using simpleWeather jQuery plugin and geolocation services
