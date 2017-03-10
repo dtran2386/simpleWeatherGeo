@@ -1,6 +1,6 @@
 window.addEventListener('load', function () {
     
-    var toFahr = function (celcius) {
+    var toFahr = function (celcius) { // convert celius to fahrenheit
         return (celcius * 9/5) + 32;
     }
     
@@ -16,11 +16,11 @@ window.addEventListener('load', function () {
       console.log('clicked get loc button');
       navigator.geolocation.getCurrentPosition(function(position) {
           var crds = position.coords;
-          loadWeather(crds.latitude + ',' + crds.longitude); //load weather using your lat/lng coordinates
+          loadWeather(crds.latitude + ',' + crds.longitude); //load weather using your lat/long coordinates
       });
     });
 
-      loadWeather('New York',''); //@params location, woeid
+      loadWeather('New York',''); //@params location
 
     function loadWeather(location) {
       $.simpleWeather({
@@ -44,9 +44,9 @@ window.addEventListener('load', function () {
             var h = today.getHours();
             var m = today.getMinutes();
             var s = today.getSeconds();
-            var ampm = h >= 12 ? 'pm' : 'am';
+            var ampm = h >= 12 ? 'pm' : 'am'; // am/pm depending on current time
             h = h % 12;
-            h = h ? h : 12;
+            h = h ? h : 12; // ensures 12-hour format, not 24-hour
             m = checkTime(m);
             s = checkTime(s);
             document.getElementById('clock').innerHTML = h + ":" + m + ":" + s + ' ' + ampm + ' EST.';
