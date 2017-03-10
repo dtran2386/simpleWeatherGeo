@@ -1,0 +1,69 @@
+window.addEventListener('load', function () {
+    
+    var toFahr = function (celcius) {
+        return (celcius * 9/5) + 32;
+    }
+    
+    /* Does your browser support geolocation? */
+    if ("geolocation" in navigator) {
+      $('.js-geolocation').show(); 
+    } else {
+      $('.js-geolocation').hide();
+    }
+
+    /* Where in the world are you? */
+    $('.js-geolocation').on('click', function() {
+      console.log('clicked get loc button');
+      navigator.geolocation.getCurrentPosition(function(position) {
+          var crds = position.coords;
+          loadWeather(crds.latitude + ',' + crds.longitude); //load weather using your lat/lng coordinates
+      });
+    });
+
+    /* 
+    * Test Locations
+    * Austin lat/long: 30.2676,-97.74298
+    * Austin WOEID: 2357536
+    */
+//    $(document).ready(function() {
+      loadWeather('New York',''); //@params location, woeid
+//    });
+
+    function loadWeather(location) {
+      $.simpleWeather({
+        location: location,
+        success: function(weather) {
+          html = '<h2><i class="icon-' + weather.code + '"></i> ' + weather.temp + '&deg;' + weather.units.temp + '</h2>';
+          html += '<ul><li>' + weather.city + ', ' + weather.region + '</li>';
+          html += '<li class="currently">' + weather.currently + '</li>';
+          html += '<li>' + Math.round(toFahr(weather.alt.temp)) + '&deg;F</li></ul>';  
+
+          $("#weather").html(html);
+        },
+        error: function(error) {
+          $("#weather").html('<p>' + error + '</p>');
+        }
+      });
+    }
+
+    function startTime () {
+            var today = new Date();
+            var h = today.getHours();
+            var m = today.getMinutes();
+            var s = today.getSeconds();
+            var ampm = h >= 12 ? 'pm' : 'am';
+            h = h % 12;
+            h = h ? h : 12;
+            m = checkTime(m);
+            s = checkTime(s);
+            document.getElementById('clock').innerHTML = h + ":" + m + ":" + s + ' ' + ampm + ' EST.';
+//            window.setTimeout(startTime, 500);
+        }
+        function checkTime(i) {
+//            if (i < 10) {i = "0" + i}; // this conditional works too
+            i = (i < 10) ? "0" + i : i; // add zero in front of numbers < 10
+            return i;
+        }
+        window.setInterval(startTime, 1000);
+
+});
